@@ -25,8 +25,22 @@ Before running this application, please ensure you have the following installed 
 
 Thanks to containerization, setting up the database and running the server is entirely automated.
 
+### Project Setup & Initialization
+Before running the container command, please clone the repository and switch to the correct feature branch where the complete implementation resides:
+```bash
+# 1. Clone the repository
+git clone https://github.com/thara-sri/ascend-task.git
+
+
+# 2. Navigate into the project directory
+cd ascend-task
+
+# 3. Switch to the feature branch containing the source code
+git checkout feature/book-management-api
+```
+
 ### Running with Docker Compose (Recommended)
-Simply navigate to the root directory of the project and execute the following command:
+Once you are on the correct branch, simply execute the following command from the root directory of the project to spin up the entire environment:
 
 ```bash
 docker-compose up -d
