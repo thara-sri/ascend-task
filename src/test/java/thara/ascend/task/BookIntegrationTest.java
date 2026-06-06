@@ -30,6 +30,11 @@ public class BookIntegrationTest {
     @Autowired
     private BookRepository bookRepository;
 
+
+    /**
+     Sets up the database before each test execution.
+     Clears all existing data and inserts mock data to ensure a testing environment.
+    **/
     @BeforeEach
     public void setupDatabase(TestInfo testInfo) {
 
@@ -55,6 +60,10 @@ public class BookIntegrationTest {
                 .build());
     }
 
+    /**
+     Tests the successful creation of a book.
+     Verify the API returns a 201 status and correctly converts the Buddhist date into a valid Christ date.
+    **/
     @Test
     public void createBook_Success_WithPublishedValidDate() throws Exception {
         String payload = """
@@ -74,6 +83,10 @@ public class BookIntegrationTest {
                 .andExpect(jsonPath("$.publishedDate").value("2017-10-20"));
     }
 
+    /**
+     Tests the successful creation of a book when the published date is null.
+     Verify the API allows a null value for the published date and still successfully creates the record.
+    **/
     @Test
     public void createBook_Success_WithNullPublishedDate() throws Exception {
         String payload = """
@@ -92,6 +105,10 @@ public class BookIntegrationTest {
                 .andExpect(jsonPath("$.publishedDate").isEmpty());
     }
 
+    /**
+     Tests the validation for an invalid published date.
+     Verify the API deny the request and returns a 400 Status if the provided year is out of the valid range.
+    **/
     @Test
     public void createBook_Fail_WithInvalidDate() throws Exception {
         String payload = """
@@ -108,6 +125,10 @@ public class BookIntegrationTest {
                 .andExpect(status().isBadRequest());
     }
 
+    /**
+     Tests the validation for missing needed fields.
+     Verify the API returns a 400 status if either the title or author fields are null.
+    **/
     @Test
     public void createBook_Fail_WithEmptyTitleOrAuthor() throws Exception {
         String payload = """
@@ -123,6 +144,10 @@ public class BookIntegrationTest {
                 .andExpect(status().isBadRequest());
     }
 
+    /**
+     Tests retrieving books by a specific author.
+     Verify the API returns a 200 status and correctly fetches all books associated with the given author's name.
+    **/
     @Test
     public void getBooksByAuthor_Success_FoundBooks() throws Exception {
         mockMvc.perform(get("/api/books")
@@ -134,6 +159,10 @@ public class BookIntegrationTest {
                 .andExpect(jsonPath("$[1].author").value("John Doe"));
     }
 
+    /**
+     Tests retrieving books for an author who does not exist in the database.
+     Verifies that the API handles by returning a 200 status with an empty array.
+    **/
     @Test
     public void getBooksByAuthor_Success_NoBooksFound() throws Exception {
         mockMvc.perform(get("/api/books")
