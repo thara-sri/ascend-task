@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Table(name = "book", indexes = {
         @Index(name = "idx_book_author", columnList = "author")
 })
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter @NoArgsConstructor
 public class Book {
 
     @Id
