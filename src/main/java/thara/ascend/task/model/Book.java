@@ -15,7 +15,7 @@ import java.time.LocalDate;
  This index optimizes the GET /books?author={authorName} query performance.
  It's preventing full table scans and ensuring fast data retrieval even with a large number of book records.
 **/
-@Getter @NoArgsConstructor
+@Getter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Book {
 
     @Id
