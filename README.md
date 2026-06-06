@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS book (
     INDEX idx_book_author (author)
 );
 ```
-**Technical Note on Optimization:** The requirement stated to avoid full table scans when fetching books by a specific author. To solve this, a B-Tree index (`idx_book_author`) is explicitly created on the `author` column. This allows the database to perform high speed logarithmic lookups ($O(\log n)$) instead of linear table scans ($O(n)$) when the `GET /books?author={authorName}` endpoint is called.
+**Technical Note on Optimization:** The requirement stated to avoid full table scans when fetching books by a specific author. To solve this, a B-Tree index (`idx_book_author`) is explicitly created on the `author` column. This allows the database to perform high speed logarithmic lookups ($$O(\log n)$$) instead of linear table scans ($$O(n)$$) when the `GET /books?author={authorName}` endpoint is called.
 
 ---
 
