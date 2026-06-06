@@ -1,3 +1,12 @@
+### Project Status:
+This repository is part of a Back-End assessment task.
+
+You can find the implementation details and the full source code in the `feature/book-management-api` branch.
+
+Please review the work via this Pull Request: https://github.com/thara-sri/ascend-task/pull/1
+
+---
+
 # Book Management API
 
 A RESTful API built with Java and Spring Boot for managing a collection of books. This project uses MySQL as the primary database and implements optimized queries to handle large datasets efficiently.
