@@ -10,6 +10,11 @@ import java.time.LocalDate;
 @Table(name = "book", indexes = {
         @Index(name = "idx_book_author", columnList = "author")
 })
+/**
+ Database index created for the author column.
+ This index optimizes the GET /books?author={authorName} query performance.
+ It's preventing full table scans and ensuring fast data retrieval even with a large number of book records.
+**/
 @Getter @NoArgsConstructor
 public class Book {
 
