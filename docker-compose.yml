@@ -1,0 +1,43 @@
+services:
+  app:
+    image: eclipse-temurin:17-jdk-alpine
+    container_name: springboot_app
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: ./mvnw spring-boot:run
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_container:3306/my_database?allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=user_password
+    depends_on:
+      db :
+        condition: service_healthy
+    networks:
+      - ascend-network
+
+  db:
+    image: mysql:latest
+    container_name: mysql_container
+    restart: always
+    environment:
+      MYSQL_DATABASE: my_database
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user_password
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "user", "-puser_password" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ascend-network
+
+networks:
+  ascend-network:
+    driver: bridge
