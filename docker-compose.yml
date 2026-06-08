@@ -21,6 +21,22 @@ services:
     networks:
       - ascend-network
 
+  app-test:
+    image: eclipse-temurin:17-jdk-alpine
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: ./mvnw test
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_db:3306/my_database?allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=user_password
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - ascend-network
+
   db:
     image: mysql:latest
     container_name: mysql_db
