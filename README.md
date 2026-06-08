@@ -43,7 +43,7 @@ git checkout feature/book-management-api
 Once you are on the correct branch, simply execute the following command from the root directory of the project to spin up the entire environment:
 
 ```bash
-docker-compose up -d
+docker-compose up -d --wait
 ```
 
 ### What happens behind the scenes?
