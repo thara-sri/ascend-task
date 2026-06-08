@@ -1,27 +1,29 @@
 services:
   app:
-    image: eclipse-temurin:17-jdk-alpine
+    build: .
     container_name: springboot_app
     restart: always
     ports:
       - "8080:8080"
-    volumes:
-      - .:/app
-    working_dir: /app
-    command: ./mvnw spring-boot:run
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_container:3306/my_database?allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql_db:3306/my_database?allowPublicKeyRetrieval=true&useSSL=false
       - SPRING_DATASOURCE_USERNAME=user
       - SPRING_DATASOURCE_PASSWORD=user_password
     depends_on:
-      db :
+      db:
         condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "8080" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 15s
     networks:
       - ascend-network
 
   db:
     image: mysql:latest
-    container_name: mysql_container
+    container_name: mysql_db
     restart: always
     environment:
       MYSQL_DATABASE: my_database
