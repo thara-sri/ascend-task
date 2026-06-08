@@ -88,7 +88,7 @@ Since the application is fully containerized, you can run the test suite directl
 While the containers are running (`docker-compose up -d`), execute the following command in your terminal:
 
 ```bash
-docker compose exec app ./mvnw test
+docker compose run --rm app-test
 ```
 ### What is being tested?
 - **POST /books:**
