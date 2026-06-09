@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import thara.ascend.task.model.Book;
@@ -14,6 +15,7 @@ import thara.ascend.task.repository.BookRepository;
 
 import java.time.LocalDate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -29,6 +31,9 @@ public class BookIntegrationTest {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
 
     /**
@@ -158,6 +163,18 @@ public class BookIntegrationTest {
                 .andExpect(jsonPath("$[0].author").value("John Doe"))
                 .andExpect(jsonPath("$[1].author").value("John Doe"));
     }
+
+    @Test
+    public void verify_BookAuthorIndex_Exists() {
+        String sql = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS " +
+                "WHERE TABLE_SCHEMA = DATABASE() " +
+                "AND TABLE_NAME = 'book' " +
+                "AND INDEX_NAME = 'idx_book_author'";
+
+        Integer indexCount = jdbcTemplate.queryForObject(sql, Integer.class);
+        assertThat(indexCount).isEqualTo(1);
+    }
+
 
     /**
      Tests retrieving books for an author who does not exist in the database.
